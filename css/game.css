@@ -1,0 +1,464 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Color chaos - same as portfolio */
+:root {
+    --neon-pink: #ff006e;
+    --toxic-green: #ccff00;
+    --cyber-blue: #00f5ff;
+    --angry-orange: #ff6b00;
+    --screaming-yellow: #ffff00;
+    --purple-rage: #9d00ff;
+    --lime-crime: #39ff14;
+    --hot-magenta: #ff00ff;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg,
+        var(--purple-rage) 0%,
+        var(--neon-pink) 25%,
+        var(--cyber-blue) 50%,
+        var(--toxic-green) 75%,
+        var(--angry-orange) 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    min-height: 100vh;
+    padding: 2rem;
+    color: #000;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Header */
+.game-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.95);
+    border: 6px solid var(--hot-magenta);
+    box-shadow:
+        8px 8px 0 var(--cyber-blue),
+        16px 16px 0 var(--toxic-green);
+    transform: rotate(-1deg);
+}
+
+.game-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--toxic-green);
+    text-shadow: 3px 3px 0 var(--neon-pink);
+    letter-spacing: 4px;
+    animation: titlePulse 2s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+    0%, 100% { text-shadow: 3px 3px 0 var(--neon-pink); }
+    50% { text-shadow: 3px 3px 0 var(--cyber-blue), 0 0 20px var(--hot-magenta); }
+}
+
+.game-subtitle {
+    color: var(--cyber-blue);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Main game area */
+.game-area {
+    background: rgba(255, 255, 255, 0.98);
+    padding: 2rem;
+    border: 6px solid var(--neon-pink);
+    box-shadow:
+        -8px 8px 0 var(--purple-rage),
+        -16px 16px 0 var(--lime-crime);
+    transform: rotate(0.5deg);
+}
+
+/* Hint box */
+.hint-box {
+    background: rgba(0, 0, 0, 0.95);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 4px solid var(--cyber-blue);
+    box-shadow: 5px 5px 0 var(--toxic-green);
+}
+
+.hint-label {
+    color: var(--screaming-yellow);
+    font-weight: 900;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.hint-text {
+    color: var(--lime-crime);
+    font-size: 1.2rem;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* Input section */
+.input-section {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.guess-input {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-family: 'Courier New', monospace;
+    border: 4px solid #000;
+    background: var(--screaming-yellow);
+    outline: none;
+    text-transform: lowercase;
+    transition: all 0.2s ease;
+}
+
+.guess-input:focus {
+    border-color: var(--hot-magenta);
+    box-shadow: 4px 4px 0 var(--cyber-blue);
+    transform: translateY(-2px);
+}
+
+.guess-input::placeholder {
+    color: #666;
+    font-style: italic;
+}
+
+.submit-btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    background: var(--lime-crime);
+    color: #000;
+    border: 4px solid #000;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.submit-btn:hover {
+    background: var(--hot-magenta);
+    color: #fff;
+    transform: scale(1.05) rotate(-2deg);
+    box-shadow: 4px 4px 0 var(--cyber-blue);
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
+
+.submit-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Remaining guesses */
+.guesses-remaining {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.8rem;
+    background: var(--toxic-green);
+    border: 3px solid #000;
+    margin-bottom: 1.5rem;
+}
+
+.guesses-remaining #guesses-left {
+    font-size: 1.5rem;
+    color: var(--neon-pink);
+}
+
+/* Guess history */
+.guess-history {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    min-height: 50px;
+}
+
+.guess-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 3px solid #000;
+    animation: slideIn 0.3s ease-out;
+}
+
+.guess-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.guess-hint {
+    font-size: 0.9rem;
+    color: #000;
+    background: linear-gradient(90deg, var(--screaming-yellow), var(--toxic-green));
+    padding: 0.5rem 0.8rem;
+    border: 2px dashed var(--purple-rage);
+    font-weight: 600;
+    animation: hintGlow 1s ease-in-out;
+}
+
+@keyframes hintGlow {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    50% {
+        box-shadow: 0 0 15px var(--screaming-yellow);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.guess-word {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+}
+
+.guess-distance {
+    font-weight: 700;
+    padding: 0.3rem 0.8rem;
+    border: 2px solid #000;
+}
+
+/* Distance colors */
+.distance-freezing {
+    background: #a8d5ff;
+}
+
+.distance-cold {
+    background: #87ceeb;
+}
+
+.distance-warm {
+    background: var(--screaming-yellow);
+}
+
+.distance-hot {
+    background: var(--angry-orange);
+    color: #fff;
+}
+
+.distance-burning {
+    background: var(--neon-pink);
+    color: #fff;
+    animation: burnPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes burnPulse {
+    0%, 100% { box-shadow: 0 0 5px var(--neon-pink); }
+    50% { box-shadow: 0 0 15px var(--neon-pink), 0 0 25px var(--angry-orange); }
+}
+
+/* Result section */
+.result-section {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+    border: 4px solid var(--hot-magenta);
+    background: rgba(0, 0, 0, 0.95);
+    animation: resultAppear 0.5s ease-out;
+}
+
+@keyframes resultAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8) rotate(-5deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.result-section.hidden {
+    display: none;
+}
+
+.elephant-art {
+    font-size: 1rem;
+    line-height: 1.2;
+    color: var(--lime-crime);
+    margin-bottom: 1rem;
+    text-align: left;
+    display: inline-block;
+}
+
+.result-message {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--cyber-blue);
+}
+
+.result-message.win {
+    color: var(--lime-crime);
+}
+
+.result-message.lose {
+    color: var(--neon-pink);
+}
+
+.play-again-btn {
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    background: var(--toxic-green);
+    color: #000;
+    border: 4px solid #000;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.play-again-btn:hover {
+    background: var(--cyber-blue);
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 5px 5px 0 var(--hot-magenta);
+}
+
+/* Top Play Again Button - appears below etymology when game ends */
+.play-again-top {
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.play-again-top.hidden {
+    display: none;
+}
+
+/* Footer */
+.game-footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.back-link {
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    background: rgba(0, 0, 0, 0.8);
+    border: 3px solid var(--cyber-blue);
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.back-link:hover {
+    background: var(--cyber-blue);
+    color: #000;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 0 var(--purple-rage);
+}
+
+/* Win animation extras */
+.confetti {
+    position: fixed;
+    pointer-events: none;
+    animation: confettiFall 3s ease-out forwards;
+    font-size: 1.5rem;
+    z-index: 1000;
+}
+
+@keyframes confettiFall {
+    0% {
+        opacity: 1;
+        transform: translateY(-100vh) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(720deg);
+    }
+}
+
+/* Elephant animations */
+.elephant-win {
+    animation: elephantBow 2s ease-in-out infinite;
+}
+
+@keyframes elephantBow {
+    0%, 100% { transform: translateY(0); }
+    30% { transform: translateY(10px) rotate(5deg); }
+    60% { transform: translateY(0) rotate(-2deg); }
+}
+
+.elephant-lose {
+    animation: elephantShake 0.5s ease-in-out infinite;
+}
+
+@keyframes elephantShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+
+    .game-title {
+        font-size: 2.5rem;
+    }
+
+    .input-section {
+        flex-direction: column;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+
+    .game-header,
+    .game-area {
+        box-shadow:
+            4px 4px 0 var(--cyber-blue),
+            8px 8px 0 var(--toxic-green);
+    }
+
+    .elephant-art {
+        font-size: 0.8rem;
+    }
+}

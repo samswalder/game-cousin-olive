@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etymology Origins - Guess the Language of Origin</title>
+    <link rel="stylesheet" href="css/origins-game.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Score Display -->
+        <div class="score-display">
+            <span class="score-label">SCORE:</span>
+            <span class="score-value" id="score">0</span>
+        </div>
+
+        <header class="game-header">
+            <h1 class="game-title">ETYMOLOGY ORIGINS</h1>
+            <p class="game-subtitle">Where does this word come from?</p>
+        </header>
+
+        <main class="game-area">
+            <!-- Word Display -->
+            <div class="word-display">
+                <span class="word-text" id="word-text">LOADING...</span>
+            </div>
+
+            <!-- Guesses Remaining -->
+            <div class="guesses-remaining" id="guesses-remaining">
+                <span class="guess-heart">&#10084;</span>
+                <span class="guess-heart">&#10084;</span>
+                <span class="guess-heart">&#10084;</span>
+            </div>
+
+            <!-- Etymology Description (shown after game ends) -->
+            <div class="etymology-reveal hidden" id="etymology-reveal">
+                <p class="etymology-text" id="etymology-text"></p>
+            </div>
+
+            <!-- Action Button (hidden until game ends) -->
+            <div class="action-section hidden" id="action-section">
+                <button id="restart-btn" class="restart-btn">RUN IT BACK</button>
+            </div>
+
+            <!-- Choice Buttons - 2x2 Grid -->
+            <div class="choices-grid" id="choices-grid">
+                <button class="choice-btn" data-index="0">Loading...</button>
+                <button class="choice-btn" data-index="1">Loading...</button>
+                <button class="choice-btn" data-index="2">Loading...</button>
+                <button class="choice-btn" data-index="3">Loading...</button>
+            </div>
+        </main>
+
+        <footer class="game-footer">
+            <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
+            <a href="game.html" class="back-link">Play ETYMORDLE &rarr;</a>
+        </footer>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <script src="js/words.js"></script>
+    <script src="js/origins-game.js"></script>
+</body>
+</html>

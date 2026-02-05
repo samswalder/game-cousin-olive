@@ -91,6 +91,42 @@ body {
     font-style: italic;
 }
 
+/* Game navigation link */
+.game-nav {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.game-link {
+    display: inline-block;
+    padding: 1.2rem 2rem;
+    background: rgba(0, 0, 0, 0.95);
+    color: var(--lime-crime);
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 1.2rem;
+    border: 5px solid var(--hot-magenta);
+    box-shadow:
+        6px 6px 0 var(--cyber-blue),
+        12px 12px 0 var(--toxic-green);
+    transition: all 0.3s ease;
+    animation: gameGlow 2s ease-in-out infinite;
+}
+
+.game-link:hover {
+    background: var(--hot-magenta);
+    color: #000;
+    transform: scale(1.05) rotate(-2deg);
+    box-shadow:
+        8px 8px 0 var(--screaming-yellow),
+        16px 16px 0 var(--purple-rage);
+}
+
+@keyframes gameGlow {
+    0%, 100% { box-shadow: 6px 6px 0 var(--cyber-blue), 12px 12px 0 var(--toxic-green); }
+    50% { box-shadow: 6px 6px 0 var(--cyber-blue), 12px 12px 0 var(--toxic-green), 0 0 20px var(--hot-magenta); }
+}
+
 /* Projects grid */
 .projects-grid {
     display: grid;
