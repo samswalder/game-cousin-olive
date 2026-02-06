@@ -642,34 +642,21 @@ function endDragPoop(clientX, clientY) {
 
 // Make a poop interactive
 function makePoopDraggable(poop) {
-    let longPressTimer = null;
-    let isDragging = false;
-
-    // Mouse events (click to activate on desktop)
-    poop.addEventListener('click', (e) => {
-        if (!isDragging) {
-            e.preventDefault();
-            startDragPoop(poop, e.clientX, e.clientY);
-            isDragging = true;
-        }
+    // Mouse events - mousedown starts drag immediately
+    poop.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        startDragPoop(poop, e.clientX, e.clientY);
     });
 
-    // Touch events (long press on mobile)
+    // Touch events - also start immediately on touch
     poop.addEventListener('touchstart', (e) => {
-        longPressTimer = setTimeout(() => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            startDragPoop(poop, touch.clientX, touch.clientY);
-            isDragging = true;
-        }, 500); // 500ms long press
+        e.preventDefault();
+        const touch = e.touches[0];
+        startDragPoop(poop, touch.clientX, touch.clientY);
     }, { passive: false });
 
-    poop.addEventListener('touchend', () => {
-        clearTimeout(longPressTimer);
-    });
-
     poop.addEventListener('touchmove', (e) => {
-        if (isDragging) {
+        if (activeDragPoop === poop) {
             e.preventDefault();
             const touch = e.touches[0];
             moveDragPoop(touch.clientX, touch.clientY);
