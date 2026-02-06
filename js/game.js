@@ -477,6 +477,226 @@ function getProgressiveHint(word, wrongGuessNumber) {
     }
 }
 
+// Toilet state
+let toiletElement = null;
+let flushSound = null;
+let activeDragPoop = null;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+// Initialize flush sound
+function initFlushSound() {
+    if (!flushSound) {
+        flushSound = new Audio('assets/audio/flush.mp3');
+        flushSound.volume = 0.7;
+    }
+}
+
+// Create the toilet element
+function createToilet() {
+    if (toiletElement) return; // Already exists
+
+    toiletElement = document.createElement('div');
+    toiletElement.className = 'toilet';
+    toiletElement.innerHTML = '🚽';
+    toiletElement.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 4rem;
+        z-index: 10000;
+        cursor: default;
+        transition: transform 0.1s ease;
+        animation: toiletAppear 0.5s ease-out;
+    `;
+
+    document.body.appendChild(toiletElement);
+
+    // Initialize sound
+    initFlushSound();
+}
+
+// Remove the toilet
+function removeToilet() {
+    if (toiletElement) {
+        toiletElement.style.animation = 'toiletDisappear 0.3s ease-in forwards';
+        setTimeout(() => {
+            if (toiletElement && toiletElement.parentNode) {
+                toiletElement.parentNode.removeChild(toiletElement);
+            }
+            toiletElement = null;
+        }, 300);
+    }
+}
+
+// Check if there are any poops left
+function checkPoopsRemaining() {
+    const poops = document.querySelectorAll('.session-poop');
+    if (poops.length === 0) {
+        removeToilet();
+    }
+}
+
+// Shake the toilet and play sound
+function flushToilet(poopElement) {
+    if (!toiletElement) return;
+
+    // Play flush sound
+    if (flushSound) {
+        flushSound.currentTime = 0;
+        flushSound.play().catch(() => {}); // Ignore autoplay errors
+    }
+
+    // Shake animation
+    toiletElement.style.animation = 'none';
+    toiletElement.offsetHeight; // Trigger reflow
+    toiletElement.style.animation = 'toiletShake 0.5s ease-in-out';
+
+    // Remove the poop with a flush animation
+    poopElement.style.transition = 'all 0.3s ease-in';
+    poopElement.style.transform = 'scale(0) rotate(720deg)';
+    poopElement.style.opacity = '0';
+
+    setTimeout(() => {
+        if (poopElement.parentNode) {
+            poopElement.parentNode.removeChild(poopElement);
+        }
+        poopCount--;
+        checkPoopsRemaining();
+    }, 300);
+}
+
+// Check if poop is over toilet
+function isOverToilet(x, y) {
+    if (!toiletElement) return false;
+
+    const toiletRect = toiletElement.getBoundingClientRect();
+    // Make hit area a bit more forgiving
+    const padding = 20;
+    return (
+        x >= toiletRect.left - padding &&
+        x <= toiletRect.right + padding &&
+        y >= toiletRect.top - padding &&
+        y <= toiletRect.bottom + padding
+    );
+}
+
+// Start dragging a poop
+function startDragPoop(poop, clientX, clientY) {
+    // Show toilet when dragging starts
+    createToilet();
+
+    activeDragPoop = poop;
+    const rect = poop.getBoundingClientRect();
+    dragOffsetX = clientX - rect.left;
+    dragOffsetY = clientY - rect.top;
+
+    // Make poop draggable
+    poop.style.cursor = 'grabbing';
+    poop.style.transition = 'none';
+    poop.style.zIndex = '10001';
+
+    // Convert to absolute positioning for dragging
+    poop.style.left = rect.left + 'px';
+    poop.style.top = rect.top + 'px';
+    poop.style.right = 'auto';
+    poop.style.bottom = 'auto';
+}
+
+// Handle drag movement
+function moveDragPoop(clientX, clientY) {
+    if (!activeDragPoop) return;
+
+    activeDragPoop.style.left = (clientX - dragOffsetX) + 'px';
+    activeDragPoop.style.top = (clientY - dragOffsetY) + 'px';
+
+    // Visual feedback when over toilet
+    if (toiletElement) {
+        if (isOverToilet(clientX, clientY)) {
+            toiletElement.style.transform = 'translateX(-50%) scale(1.2)';
+        } else {
+            toiletElement.style.transform = 'translateX(-50%) scale(1)';
+        }
+    }
+}
+
+// End dragging
+function endDragPoop(clientX, clientY) {
+    if (!activeDragPoop) return;
+
+    const poop = activeDragPoop;
+    activeDragPoop = null;
+
+    // Check if dropped on toilet
+    if (isOverToilet(clientX, clientY)) {
+        flushToilet(poop);
+    } else {
+        // Return poop to normal state
+        poop.style.cursor = 'pointer';
+        poop.style.zIndex = '9999';
+        // Hide toilet if not used
+        removeToilet();
+    }
+}
+
+// Make a poop interactive
+function makePoopDraggable(poop) {
+    let longPressTimer = null;
+    let isDragging = false;
+
+    // Mouse events (click to activate on desktop)
+    poop.addEventListener('click', (e) => {
+        if (!isDragging) {
+            e.preventDefault();
+            startDragPoop(poop, e.clientX, e.clientY);
+            isDragging = true;
+        }
+    });
+
+    // Touch events (long press on mobile)
+    poop.addEventListener('touchstart', (e) => {
+        longPressTimer = setTimeout(() => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            startDragPoop(poop, touch.clientX, touch.clientY);
+            isDragging = true;
+        }, 500); // 500ms long press
+    }, { passive: false });
+
+    poop.addEventListener('touchend', () => {
+        clearTimeout(longPressTimer);
+    });
+
+    poop.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            moveDragPoop(touch.clientX, touch.clientY);
+        }
+    }, { passive: false });
+}
+
+// Global mouse/touch move and up handlers
+document.addEventListener('mousemove', (e) => {
+    if (activeDragPoop) {
+        moveDragPoop(e.clientX, e.clientY);
+    }
+});
+
+document.addEventListener('mouseup', (e) => {
+    if (activeDragPoop) {
+        endDragPoop(e.clientX, e.clientY);
+    }
+});
+
+document.addEventListener('touchend', (e) => {
+    if (activeDragPoop) {
+        const touch = e.changedTouches[0];
+        endDragPoop(touch.clientX, touch.clientY);
+    }
+});
+
 // Add a poop emoji to the screen
 function addPoop() {
     poopCount++;
@@ -503,8 +723,12 @@ function addPoop() {
     poop.style.fontSize = (1.5 + Math.random() * 0.5) + 'rem';
     poop.style.zIndex = '9999';
     poop.style.animation = 'poopDrop 0.5s ease-out';
+    poop.style.cursor = 'pointer';
 
     document.body.appendChild(poop);
+
+    // Make it draggable
+    makePoopDraggable(poop);
 }
 
 // Pick a random word (avoiding recently used)
@@ -696,8 +920,49 @@ shakeStyle.textContent = `
         }
     }
     .session-poop {
-        pointer-events: none;
+        pointer-events: auto;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    .session-poop:hover {
+        transform: scale(1.2);
+    }
+    @keyframes toiletAppear {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) scale(0) rotate(-180deg);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(-50%) scale(1) rotate(0deg);
+        }
+    }
+    @keyframes toiletDisappear {
+        0% {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(-50%) scale(0) translateY(50px);
+        }
+    }
+    @keyframes toiletShake {
+        0%, 100% { transform: translateX(-50%) rotate(0deg); }
+        10% { transform: translateX(-50%) rotate(-10deg); }
+        20% { transform: translateX(-50%) rotate(10deg); }
+        30% { transform: translateX(-50%) rotate(-10deg); }
+        40% { transform: translateX(-50%) rotate(10deg); }
+        50% { transform: translateX(-50%) rotate(-5deg); }
+        60% { transform: translateX(-50%) rotate(5deg); }
+        70% { transform: translateX(-50%) rotate(-5deg); }
+        80% { transform: translateX(-50%) rotate(5deg); }
+        90% { transform: translateX(-50%) rotate(-2deg); }
+    }
+    .toilet {
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
     }
 `;
 document.head.appendChild(shakeStyle);
