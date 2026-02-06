@@ -93,34 +93,385 @@ function getDistanceInfo(similarity) {
     }
 }
 
+// Rhyme dictionary - maps word endings to rhyming words
+const RHYME_MAP = {
+    // Common endings and their rhymes
+    'gia': 'nostalgia → Georgia',
+    'ic': 'panic → magic',
+    'asm': 'enthusiasm → sarcasm',
+    'gy': 'lethargy → energy',
+    'ize': 'tantalize → surprise',
+    'ial': 'jovial →rial',
+    'ial2': 'mercurial → burial',
+    'oly': 'melancholy → jolly',
+    'ion': 'companion → onion',
+    'al': 'rival → arrival',
+    'ate': 'candidate → fate',
+    'ain': 'villain →ain',
+    'nce': 'dunce → once',
+    'ott': 'boycott → hot',
+    'ick': 'maverick → trick',
+    'ist': 'chauvinist → fist',
+    'asm2': 'sarcasm → chasm',
+    'gan': 'slogan → logan',
+    'ip': 'gossip → ship',
+    'ue': 'clue → true',
+    'ia': 'trivia → via',
+    'ary': 'salary → canary',
+    'upt': 'bankrupt → abrupt',
+    'ee': 'fee → free',
+    'ary2': 'pecuniary →iary',
+    'al2': 'capital →ital',
+    'ey': 'whiskey → risky',
+    'ino': 'cappuccino → casino',
+    'ado': 'avocado → bravado',
+    'upe': 'cantaloupe → troop',
+    'eans': 'jeans → means',
+    'im': 'denim → him',
+    'an': 'cardigan → began',
+    'ants': 'pants → ants',
+    'at': 'cravat → hat',
+    'ine': 'quarantine → mine',
+    'ula': 'peninsula → hula',
+    'ano': 'volcano →rano',
+    'ary3': 'canary → fairy',
+    'a': 'spa → la',
+    'in': 'assassin → sin',
+    'erk': 'berserk → work',
+    'ate2': 'decimate → late',
+    'ine2': 'deadline → fine',
+    'ance': 'freelance → dance',
+    'ia2': 'malaria → area',
+    'ine3': 'vaccine → machine',
+    'ic2': 'lunatic → trick',
+    'er': 'disaster → faster',
+    'ine4': 'porcupine → spine',
+    'us': 'hippopotamus → bus',
+    'ion2': 'dandelion → lion',
+    'ard': 'leopard → heard',
+    'ano2': 'piano → soprano',
+    'edy': 'tragedy → remedy',
+    'um': 'museum → boredom',
+    'ra': 'orchestra → extra',
+    'ace': 'palace → malice',
+    'ion3': 'pavilion → million',
+    'ow': 'window → shadow',
+    'or': 'corridor → door',
+    'ard2': 'hazard → wizard',
+    'ate3': 'checkmate → fate',
+    'ump': 'trump → jump',
+    'it': 'gambit → bit',
+    'eer': 'buccaneer → beer',
+    'er2': 'filibuster → cluster',
+    'om': 'maelstrom → from',
+    'al3': 'admiral → pal',
+    'ict': 'verdict → strict',
+    'i': 'alibi → fly',
+    'it2': 'culprit → hit',
+    'iz': 'quiz → fizz',
+    'ity': 'serendipity → city',
+    'ot': 'robot → lot',
+    'ia3': 'utopia → cornucopia',
+    'ame': 'nickname → fame',
+    'on': 'apron → ron',
+    'ire': 'umpire → fire',
+    'er3': 'adder → ladder',
+    'o': 'echo → go',
+    'ist2': 'narcissist → mist',
+    'as': 'atlas → gas',
+    'eal': 'cereal → real',
+    'al4': 'martial → partial'
+};
+
+// Find a rhyming word for the target
+function findRhyme(word) {
+    const w = word.toLowerCase();
+
+    // Check for specific words first
+    const specificRhymes = {
+        'nostalgia': 'neuralgia',
+        'panic': 'manic',
+        'enthusiasm': 'orgasm',
+        'lethargy': 'clergy',
+        'tantalize': 'realize',
+        'jovial': 'rial',
+        'mercurial': 'burial',
+        'melancholy': 'collie',
+        'companion': 'canyon',
+        'rival': 'survival',
+        'candidate': 'date',
+        'villain': 'chillin',
+        'dunce': 'once',
+        'boycott': 'mascot',
+        'maverick': 'erick',
+        'chauvinist': 'list',
+        'sarcasm': 'chasm',
+        'slogan': 'shogun',
+        'gossip': 'fossil',
+        'clue': 'blue',
+        'trivia': 'Olivia',
+        'salary': 'gallery',
+        'bankrupt': 'corrupt',
+        'fee': 'tree',
+        'pecuniary': 'iary',
+        'capital': 'hospital',
+        'whiskey': 'frisky',
+        'cappuccino': 'bambino',
+        'avocado': 'desperado',
+        'cantaloupe': 'elope',
+        'jeans': 'beans',
+        'denim': 'venom',
+        'cardigan': 'Michigan',
+        'pants': 'ants',
+        'cravat': 'combat',
+        'quarantine': 'wolverine',
+        'peninsula': 'Dracula',
+        'volcano': 'piano',
+        'canary': 'scary',
+        'spa': 'hurrah',
+        'assassin': 'basin',
+        'berserk': 'clerk',
+        'decimate': 'imate',
+        'deadline': 'headline',
+        'freelance': 'romance',
+        'malaria': 'hysteria',
+        'vaccine': 'marine',
+        'lunatic': 'fanatic',
+        'disaster': 'master',
+        'porcupine': 'sunshine',
+        'hippopotamus': 'ignoramus',
+        'dandelion': 'stallion',
+        'leopard': 'shepherd',
+        'piano': 'volcano',
+        'tragedy': 'strategy',
+        'museum': 'coliseum',
+        'orchestra': 'plethora',
+        'palace': 'chalice',
+        'pavilion': 'civilian',
+        'window': 'limbo',
+        'corridor': 'matador',
+        'hazard': 'blizzard',
+        'checkmate': 'stalemate',
+        'trump': 'bump',
+        'gambit': 'rabbit',
+        'buccaneer': 'pioneer',
+        'filibuster': 'muster',
+        'maelstrom': 'prom',
+        'admiral': 'mineral',
+        'verdict': 'evict',
+        'alibi': 'alibi → goodbye',
+        'culprit': 'permit',
+        'quiz': 'whiz',
+        'serendipity': 'pity',
+        'robot': 'cannot',
+        'utopia': 'cornucopia',
+        'nickname': 'blame',
+        'apron': 'patron',
+        'umpire': 'empire',
+        'adder': 'bladder',
+        'echo': 'gecko',
+        'narcissist': 'exist',
+        'atlas': 'alas',
+        'cereal': 'ethereal',
+        'martial': 'partial',
+        'aftermath': 'bath',
+        'bedlam': 'jam',
+        'belfry': 'selfie',
+        'blackmail': 'detail',
+        'blurb': 'curb',
+        'brouhaha': 'ooh la la',
+        'calculate': 'ulate',
+        'cancel': 'chancel',
+        'canter': 'banter',
+        'captain': 'satin',
+        'chapel': 'apple',
+        'charlatan': 'caravan',
+        'clinic': 'cynic',
+        'clumsy': 'flimsy',
+        'cobalt': 'fault',
+        'coconut': 'but',
+        'comrade': 'parade',
+        'constable': 'unstable',
+        'copper': 'hopper',
+        'curfew': 'few',
+        'cynic': 'clinic',
+        'daisy': 'crazy',
+        'glamour': 'hammer',
+        'gazette': 'jet',
+        'groggy': 'foggy',
+        'handicap': 'trap',
+        'husband': 'band',
+        'infantry': 'chivalry',
+        'journey': 'attorney',
+        'magazine': 'routine',
+        'mortgage': 'shortage',
+        'noon': 'moon',
+        'orange': 'door-hinge',
+        'pamphlet': 'hamlet',
+        'peculiar': 'familiar',
+        'purple': 'turtle',
+        'sandwich': 'which',
+        'sideburns': 'returns',
+        'silhouette': 'cigarette',
+        'sincere': 'frontier',
+        'tawdry': 'laundry',
+        'thesaurus': 'brontosaurus',
+        'threshold': 'behold',
+        'trivial': 'jovial',
+        'tuxedo': 'torpedo',
+        'umbrella': 'Cinderella',
+        'vandal': 'sandal',
+        'wardrobe': 'probe',
+        'abracadabra': 'algebra',
+        'accolade': 'parade',
+        'cabal': 'canal',
+        'cadence': 'fence',
+        'carousel': 'carousel → gazelle',
+        'caterpillar': 'gorilla',
+        'caucus': 'raucous',
+        'chancellor': 'counselor',
+        'chapter': 'after',
+        'cockpit': 'armpit',
+        'bonfire': 'vampire',
+        'dachshund': 'hound',
+        'fiasco': 'disco',
+        'galore': 'shore',
+        'goodbye': 'alibi',
+        'gossamer': 'customer',
+        'grotesque': 'burlesque',
+        'gymnasium': 'stadium',
+        'halcyon': 'carry on',
+        'havoc': 'stomach',
+        'hearse': 'verse',
+        'hermit': 'permit',
+        'hooligan': 'cardigan',
+        'hypocrite': 'favorite',
+        'inoculate': 'calculate',
+        'insult': 'adult',
+        'janitor': 'senator',
+        'jeopardy': 'Jeopardy',
+        'jubilee': 'referee',
+        'lackadaisical': 'musical',
+        'leotard': 'discard',
+        'lieutenant': 'tenant',
+        'limousine': 'gasoline',
+        'meander': 'gander',
+        'mesmerize': 'hypnotize',
+        'nightmare': 'welfare',
+        'ostracize': 'exercise',
+        'pandemonium': 'stadium',
+        'phony': 'baloney',
+        'plagiarize': 'memorize',
+        'prestige': 'fatigue',
+        'prodigy': 'odyssey',
+        'propaganda': 'veranda',
+        'quarry': 'sorry',
+        'sabotage': 'mirage',
+        'scapegoat': 'boat',
+        'shambles': 'scrambles',
+        'sinister': 'minister',
+        'stentorian': 'historian',
+        'stoic': 'heroic',
+        'tantrum': 'tantrum → phantom',
+        'trophy': 'Sophie',
+        'uncle': 'uncle → carbuncle',
+        'vengeance': 'vengeance → sentence',
+        'vernacular': 'spectacular',
+        'zeal': 'deal'
+    };
+
+    if (specificRhymes[w]) {
+        return specificRhymes[w];
+    }
+
+    // Fallback: return a generic rhyme based on ending
+    const lastTwo = w.slice(-2);
+    const lastThree = w.slice(-3);
+
+    const endingRhymes = {
+        'ly': 'free',
+        'er': 'sister',
+        'or': 'door',
+        'al': 'pal',
+        'le': 'full',
+        'ty': 'free',
+        'ry': 'free',
+        'ny': 'funny',
+        'cy': 'free',
+        'gy': 'energy',
+        'py': 'happy',
+        'dy': 'ready',
+        'by': 'baby',
+        'fy': 'defy',
+        'hy': 'high',
+        'ky': 'lucky',
+        'my': 'dummy',
+        'sy': 'messy',
+        'vy': 'gravy',
+        'wy': 'chewy',
+        'zy': 'crazy'
+    };
+
+    if (endingRhymes[lastTwo]) {
+        return endingRhymes[lastTwo];
+    }
+
+    // Last resort
+    return 'something';
+}
+
+// Snarky no-hint messages for hint 1
+const SNARKY_MESSAGES = [
+    "You wish I'd give you a hint, wouldn't you? 😏",
+    "A hint? Already? How bold of you.",
+    "Nope. You're on your own for this one.",
+    "Hints are for the weak. Keep guessing!",
+    "The elephant is watching. No hints yet.",
+    "🐘 *stares judgmentally* ...no hint.",
+    "Try harder. The word isn't going anywhere.",
+    "Hint? What hint? I don't see any hints here.",
+    "You've got 4 more guesses. Figure it out.",
+    "The etymology IS the hint. Read it again!",
+    "Nice try, but you'll have to earn your hints.",
+    "Patience, grasshopper. Hints come to those who fail.",
+    "Error 404: Hint not found.",
+    "🎩 The elephant tips his hat... but offers no hint."
+];
+
 // Generate progressive hints based on wrong guess number (1-5)
 function getProgressiveHint(word, wrongGuessNumber) {
     const w = word.toLowerCase();
 
     switch (wrongGuessNumber) {
         case 1:
-            // Tiny hint: just the word length
-            return `The word has ${w.length} letters`;
+            // Snarky non-hint
+            return SNARKY_MESSAGES[Math.floor(Math.random() * SNARKY_MESSAGES.length)];
         case 2:
-            // Small hint: first letter
-            return `It starts with "${w[0].toUpperCase()}"`;
+            // First letter
+            return `It starts with the letter "${w[0].toUpperCase()}"`;
         case 3:
-            // Medium hint: first and last letter
-            return `Starts with "${w[0].toUpperCase()}", ends with "${w[w.length - 1].toUpperCase()}"`;
+            // Rhymes with
+            const rhyme = findRhyme(w);
+            return `Rhymes with "${rhyme}"`;
         case 4:
-            // Bigger hint: first two and last letter
-            return `Starts with "${w[0].toUpperCase()}${w[1].toUpperCase()}", ends with "${w[w.length - 1].toUpperCase()}"`;
+            // Really good hint - reveal pattern
+            let revealed = w[0].toUpperCase();
+            for (let i = 1; i < w.length - 1; i++) {
+                revealed += ' _';
+            }
+            revealed += ' ' + w[w.length - 1].toUpperCase();
+            return `Pattern: ${revealed} (${w.length} letters)`;
         case 5:
-            // Big hint: reveal some letters (every other letter shown)
-            let revealed = '';
+            // Mega hint - every other letter
+            let pattern = '';
             for (let i = 0; i < w.length; i++) {
                 if (i % 2 === 0) {
-                    revealed += w[i].toUpperCase();
+                    pattern += w[i].toUpperCase();
                 } else {
-                    revealed += '_';
+                    pattern += '_';
                 }
             }
-            return `The word looks like: ${revealed}`;
+            return `Almost there: ${pattern}`;
         default:
             return '';
     }
