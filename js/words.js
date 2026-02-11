@@ -58,7 +58,7 @@ const WORDS = [
     },
     {
         word: "candidate",
-        etymology: "From Latin 'candidus' (white) — Roman office-seekers wore bleached white togas",
+        etymology: "Roman office-seekers wore bleached white togas to show their purity",
         origin: "Latin"
     },
     {
@@ -110,7 +110,7 @@ const WORDS = [
     },
     {
         word: "trivia",
-        etymology: "From Latin 'tri' (three) + 'via' (road) — where three roads meet, where common people gathered to chat",
+        etymology: "Information exchanged where three roads met in ancient Rome — considered common knowledge",
         origin: "Latin"
     },
 
@@ -149,7 +149,7 @@ const WORDS = [
     },
     {
         word: "cappuccino",
-        etymology: "From Italian 'cappuccio' (hood) — the drink's brown color matches the robes of hooded friars",
+        etymology: "From Italian for 'hood' — the drink's brown color matches the robes of hooded friars",
         origin: "Italian"
     },
     {
@@ -198,7 +198,7 @@ const WORDS = [
     },
     {
         word: "peninsula",
-        etymology: "From Latin 'paene' (almost) + 'insula' (island) — land that's nearly surrounded by water",
+        etymology: "From Latin for 'almost an island' — land that's nearly surrounded by water",
         origin: "Latin"
     },
     {
@@ -235,7 +235,7 @@ const WORDS = [
     },
     {
         word: "deadline",
-        etymology: "From a Civil War prison — the line prisoners would be shot dead for crossing",
+        etymology: "From a Civil War prison — the line prisoners would be shot for crossing",
         origin: "English"
     },
     {
@@ -247,7 +247,7 @@ const WORDS = [
     // === SCIENCE & MEDICINE ===
     {
         word: "malaria",
-        etymology: "From Italian 'mal' (bad) + 'aria' (air) — people blamed foul swamp vapors for the disease",
+        etymology: "From Italian for 'bad air' — people blamed foul swamp vapors for the disease",
         origin: "Italian"
     },
     {
@@ -291,7 +291,7 @@ const WORDS = [
     // === MUSIC & ART ===
     {
         word: "piano",
-        etymology: "From Italian 'piano e forte' (soft and loud) — revolutionary because you could control volume",
+        etymology: "From Italian for 'soft and loud' — revolutionary because you could control volume",
         origin: "Italian"
     },
     {
@@ -301,12 +301,12 @@ const WORDS = [
     },
     {
         word: "museum",
-        etymology: "From Greek 'mouseion' — a shrine to the nine goddesses of arts and sciences",
+        etymology: "From Greek — a shrine to the nine goddesses of arts and sciences",
         origin: "Greek"
     },
     {
         word: "orchestra",
-        etymology: "From Greek 'orkhestra' — the semicircular space where the chorus danced in ancient theaters",
+        etymology: "From Greek — the semicircular space where the chorus danced in ancient theaters",
         origin: "Greek"
     },
 
@@ -362,7 +362,7 @@ const WORDS = [
     },
     {
         word: "filibuster",
-        etymology: "From Spanish 'filibustero' (pirate) — now means blocking legislation by talking endlessly",
+        etymology: "From Spanish for 'pirate' — now means blocking legislation by talking endlessly",
         origin: "Spanish"
     },
     {
@@ -384,7 +384,7 @@ const WORDS = [
     },
     {
         word: "alibi",
-        etymology: "From Latin 'alibi' (elsewhere) — proof that you were somewhere else when a crime occurred",
+        etymology: "Latin for 'elsewhere' — proof you were in a different place when a crime occurred",
         origin: "Latin"
     },
     {
@@ -467,7 +467,7 @@ const WORDS = [
     // === NEW ADDITIONS - CLEANED UP ===
     {
         word: "aftermath",
-        etymology: "From 'after' + 'math' (mowing) — the second growth of grass after the first harvest",
+        etymology: "From Old English — the second growth of grass after the first harvest",
         origin: "English"
     },
     {
@@ -497,12 +497,12 @@ const WORDS = [
     },
     {
         word: "calculate",
-        etymology: "From Latin 'calculus' (pebble) — Romans used small stones for counting and arithmetic",
+        etymology: "Romans used small stones for counting — the practice gave us this math word",
         origin: "Latin"
     },
     {
         word: "cancel",
-        etymology: "From Latin 'cancelli' (lattice, crossbars) — to mark out with crossed lines",
+        etymology: "From Latin meaning lattice or crossbars — to mark out with crossed lines",
         origin: "Latin"
     },
     {
@@ -532,7 +532,7 @@ const WORDS = [
     },
     {
         word: "clumsy",
-        etymology: "From Middle English 'clumsed' (numb with cold) — stiff fingers make you awkward",
+        etymology: "From Middle English meaning 'numb with cold' — stiff fingers make you awkward",
         origin: "English"
     },
     {
@@ -567,7 +567,7 @@ const WORDS = [
     },
     {
         word: "cynic",
-        etymology: "From Greek 'kynikos' (dog-like) — philosophers who lived simply, rejecting social conventions",
+        etymology: "From Greek for 'dog-like' — philosophers who lived simply, rejecting social conventions",
         origin: "Greek"
     },
     {
@@ -582,7 +582,7 @@ const WORDS = [
     },
     {
         word: "gazette",
-        etymology: "From Italian 'gazeta' — a small Venetian coin, the price of early newspapers",
+        etymology: "From Italian — a small Venetian coin, the price of early newspapers",
         origin: "Italian"
     },
     {
@@ -607,7 +607,7 @@ const WORDS = [
     },
     {
         word: "journey",
-        etymology: "From Old French 'journée' (a day) — originally how far you could travel in one day",
+        etymology: "From Old French for 'a day' — originally how far you could travel in one day",
         origin: "French"
     },
     {
@@ -632,7 +632,7 @@ const WORDS = [
     },
     {
         word: "pamphlet",
-        etymology: "From a 12th-century Latin love poem 'Pamphilus' — widely copied on cheap paper",
+        etymology: "From a 12th-century Latin love poem — widely copied on cheap paper",
         origin: "Latin"
     },
     {
@@ -642,7 +642,7 @@ const WORDS = [
     },
     {
         word: "purple",
-        etymology: "From Latin 'purpura' — a shellfish Romans crushed to make expensive royal dye",
+        etymology: "From Latin — a shellfish Romans crushed to make expensive royal dye",
         origin: "Latin"
     },
     {
@@ -672,7 +672,7 @@ const WORDS = [
     },
     {
         word: "thesaurus",
-        etymology: "From Greek 'thesauros' (treasury, storehouse) — a treasury of words and synonyms",
+        etymology: "From Greek meaning treasury or storehouse — a treasury of words and synonyms",
         origin: "Greek"
     },
     {
@@ -682,7 +682,7 @@ const WORDS = [
     },
     {
         word: "trivial",
-        etymology: "From Latin 'tri' (three) + 'via' (road) — common knowledge found where roads meet",
+        etymology: "From Latin for 'where three roads meet' — common knowledge found at crossroads",
         origin: "Latin"
     },
     {
@@ -729,7 +729,7 @@ const WORDS = [
     },
     {
         word: "carousel",
-        etymology: "From Italian 'carosello' — originally a jousting tournament, later a merry-go-round",
+        etymology: "From Italian — originally a jousting tournament, later a merry-go-round",
         origin: "Italian"
     },
     {
@@ -739,12 +739,12 @@ const WORDS = [
     },
     {
         word: "caucus",
-        etymology: "Possibly from Algonquian 'caucauasu' (counselor) — a political meeting to select candidates",
+        etymology: "Possibly from Algonquian for 'counselor' — a political meeting to select candidates",
         origin: "Algonquian"
     },
     {
         word: "chancellor",
-        etymology: "From Latin 'cancellarius' — an official who stood at the latticed barrier in court",
+        etymology: "From Latin — an official who stood at the latticed barrier in court",
         origin: "Latin"
     },
     {
@@ -769,7 +769,7 @@ const WORDS = [
     },
     {
         word: "fiasco",
-        etymology: "From Italian 'fare fiasco' (make a bottle) — a flawed glass bottle that fails and breaks",
+        etymology: "From Italian 'to make a bottle' — a flawed glass bottle that fails and breaks",
         origin: "Italian"
     },
     {
@@ -789,17 +789,17 @@ const WORDS = [
     },
     {
         word: "grotesque",
-        etymology: "From Italian 'grotta' (cave) — bizarre paintings found in excavated Roman chambers",
+        etymology: "From Italian for 'cave' — bizarre paintings found in excavated Roman chambers",
         origin: "Italian"
     },
     {
         word: "gymnasium",
-        etymology: "From Greek 'gymnos' (naked) — ancient Greeks exercised without clothing",
+        etymology: "From Greek for 'naked' — ancient Greeks exercised without clothing",
         origin: "Greek"
     },
     {
         word: "halcyon",
-        etymology: "From Greek 'halkyon' (kingfisher) — the bird was said to calm seas during winter nesting",
+        etymology: "From Greek for kingfisher — the bird was said to calm seas during winter nesting",
         origin: "Greek"
     },
     {
@@ -824,7 +824,7 @@ const WORDS = [
     },
     {
         word: "hypocrite",
-        etymology: "From Greek 'hypokrites' — an actor on stage, one who wears a mask and pretends",
+        etymology: "From Greek for 'actor on stage' — one who wears a mask and pretends",
         origin: "Greek"
     },
     {
@@ -834,12 +834,12 @@ const WORDS = [
     },
     {
         word: "insult",
-        etymology: "From Latin 'insultare' — to leap upon, to assault verbally",
+        etymology: "From Latin meaning 'to leap upon' — to assault verbally",
         origin: "Latin"
     },
     {
         word: "janitor",
-        etymology: "From Latin 'Janus' — the two-faced Roman god of doorways and beginnings",
+        etymology: "From the two-faced Roman god of doorways and beginnings",
         origin: "Latin"
     },
     {
@@ -864,7 +864,7 @@ const WORDS = [
     },
     {
         word: "lieutenant",
-        etymology: "From French 'lieu' (place) + 'tenant' (holding) — one who holds the place of a superior",
+        etymology: "From French for 'one who holds the place' — a deputy who stands in for a superior",
         origin: "French"
     },
     {
@@ -904,7 +904,7 @@ const WORDS = [
     },
     {
         word: "plagiarize",
-        etymology: "From Latin 'plagiarius' (kidnapper) — stealing someone's words as if kidnapping them",
+        etymology: "From Latin for 'kidnapper' — stealing someone's words as if kidnapping them",
         origin: "Latin"
     },
     {
@@ -914,12 +914,12 @@ const WORDS = [
     },
     {
         word: "prodigy",
-        etymology: "From Latin 'prodigium' (omen, portent) — an extraordinary person seen as a sign from the gods",
+        etymology: "From Latin for 'omen or portent' — an extraordinary person seen as a sign from the gods",
         origin: "Latin"
     },
     {
         word: "propaganda",
-        etymology: "From a papal committee for 'propagating' the faith — spreading religious beliefs",
+        etymology: "From a papal committee for spreading the faith — spreading religious beliefs",
         origin: "Latin"
     },
     {
@@ -944,12 +944,12 @@ const WORDS = [
     },
     {
         word: "sinister",
-        etymology: "From Latin 'sinister' (left) — the left side was considered unlucky and evil",
+        etymology: "From Latin for 'left' — the left side was considered unlucky and evil",
         origin: "Latin"
     },
     {
         word: "stentorian",
-        etymology: "From Stentor, a Greek herald in the Iliad whose voice was as loud as fifty men",
+        etymology: "From a Greek herald in the Iliad whose voice was as loud as fifty men",
         origin: "Greek"
     },
     {
@@ -984,7 +984,7 @@ const WORDS = [
     },
     {
         word: "zeal",
-        etymology: "From Greek 'zelos' — intense enthusiasm, originally related to jealousy",
+        etymology: "From Greek, meaning intense enthusiasm — originally related to jealousy and rivalry",
         origin: "Greek"
     }
 ];
