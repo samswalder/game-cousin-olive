@@ -20,6 +20,7 @@ const elements = {
     guessInput: document.getElementById('guess-input'),
     submitBtn: document.getElementById('submit-btn'),
     guessesLeft: document.getElementById('guesses-left'),
+    guessesRemaining: document.getElementById('guesses-remaining'),
     guessHistory: document.getElementById('guess-history'),
     resultSection: document.getElementById('result-section'),
     resultMessage: document.getElementById('result-message'),
@@ -763,6 +764,12 @@ function startNewGame() {
     elements.elephantArt.classList.remove('elephant-win', 'elephant-lose');
     elements.resultMessage.classList.remove('win', 'lose');
     elements.resultMessage.textContent = '';  // Clear any previous message
+    // Reset guesses remaining display
+    elements.guessesRemaining.innerHTML = '<span id="guesses-left">5</span> guesses remaining';
+    elements.guessesRemaining.classList.remove('congrats-message');
+    elements.guessesRemaining.style.display = '';
+    // Re-grab the guessesLeft element since we replaced the innerHTML
+    elements.guessesLeft = document.getElementById('guesses-left');
     elements.guessInput.focus();
 }
 
@@ -849,6 +856,13 @@ function shakeInput() {
     elements.guessInput.style.animation = 'shake 0.5s ease-in-out';
 }
 
+// Get word-specific congratulations message
+function getCongratsMessage(wordObj) {
+    // Use word-specific pun if available, otherwise fallback
+    const congratsMsg = wordObj.congrats || `You got it! 🎉`;
+    return `${congratsMsg} The word was "${wordObj.word.toUpperCase()}"`;
+}
+
 // End the game
 function endGame(won) {
     gameState.gameOver = true;
@@ -862,9 +876,13 @@ function endGame(won) {
     elements.topButtons.classList.remove('hidden');
 
     if (won) {
+        // Replace guesses remaining with congrats message (pass full word object for pun)
+        elements.guessesRemaining.innerHTML = getCongratsMessage(gameState.currentWord);
+        elements.guessesRemaining.classList.add('congrats-message');
         elements.resultMessage.textContent = 'Congratulations!';
         showWinAnimation();
     } else {
+        elements.guessesRemaining.style.display = 'none';
         showLoseAnimation(gameState.currentWord.word);
     }
 }
