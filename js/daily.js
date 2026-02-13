@@ -12,12 +12,12 @@ const STORAGE_KEYS = {
 // DATE & SEEDING FUNCTIONS
 // ============================================
 
-// Get days since epoch (Jan 1, 2024)
+// Get days since epoch (Feb 11, 2026 - launch day!)
 function getDayNumber() {
-    const epoch = new Date('2024-01-01T00:00:00');
+    const epoch = new Date('2026-02-11T00:00:00');
     const now = new Date();
     const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    return Math.floor((localMidnight - epoch) / (1000 * 60 * 60 * 24));
+    return Math.floor((localMidnight - epoch) / (1000 * 60 * 60 * 24)) + 1; // +1 so today is Puzzle #1
 }
 
 // Seeded PRNG (mulberry32)
@@ -41,11 +41,12 @@ function getYesterdayDateString() {
     return `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
 }
 
-// Get today's daily word
+// Get today's daily word from the curated list
 function getDailyWord() {
     const dayNumber = getDayNumber();
-    const wordIndex = Math.floor(seededRandom(dayNumber) * WORDS.length);
-    return WORDS[wordIndex];
+    // Use curated DAILY_WORDS list (day 1 = index 0)
+    const wordIndex = (dayNumber - 1) % DAILY_WORDS.length;
+    return DAILY_WORDS[wordIndex];
 }
 
 // ============================================
@@ -108,6 +109,7 @@ const elements = {
     guessInput: document.getElementById('guess-input'),
     submitBtn: document.getElementById('submit-btn'),
     guessesLeft: document.getElementById('guesses-left'),
+    guessesRemaining: document.getElementById('guesses-remaining'),
     guessHistory: document.getElementById('guess-history'),
     resultSection: document.getElementById('result-section'),
     resultMessage: document.getElementById('result-message'),
@@ -551,6 +553,7 @@ function showCompletedGameUI(won) {
     elements.guessInput.disabled = true;
     elements.submitBtn.disabled = true;
     elements.inputSection.style.display = 'none';
+    elements.guessesRemaining.style.display = 'none';
     elements.resultSection.classList.remove('hidden');
 
     if (won) {
