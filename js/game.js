@@ -428,18 +428,26 @@ function findRhyme(word) {
 const SNARKY_MESSAGES = [
     "You wish I'd give you a hint, wouldn't you? 😏",
     "A hint? Already? How bold of you.",
-    "Nope. You're on your own for this one.",
     "Hints are for the weak. Keep guessing!",
     "The elephant is watching. No hints yet.",
     "🐘 *stares judgmentally* ...no hint.",
     "Try harder. The word isn't going anywhere.",
     "Hint? What hint? I don't see any hints here.",
     "You've got 4 more guesses. Figure it out.",
-    "The etymology IS the hint. Read it again!",
     "Nice try, but you'll have to earn your hints.",
     "Patience, grasshopper. Hints come to those who fail.",
     "Error 404: Hint not found.",
-    "🎩 The elephant tips his hat... but offers no hint."
+    "🎩 The elephant tips his hat... but offers no hint.",
+    "Oh, you want help? That's adorable.",
+    "The answer is right there in the etymology... somewhere.",
+    "🤔 Let me think... no.",
+    "First guess and already asking for hints? Bold strategy.",
+    "The elephant believes in you. But no hint.",
+    "Have you tried guessing harder?",
+    "Hints cost extra. Keep guessing for now.",
+    "🐘 *trumpets dismissively*",
+    "You'll thank me later for not giving you a hint.",
+    "Where's the fun in just telling you?"
 ];
 
 // Generate progressive hints based on wrong guess number (1-4)
