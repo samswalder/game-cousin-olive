@@ -20,8 +20,11 @@
                 <p class="hint-text" id="etymology-hint">Loading...</p>
             </div>
 
-            <!-- Top Play Again Button (shown when game ends) -->
-            <button id="play-again-top" class="play-again-btn play-again-top hidden">PLAY AGAIN</button>
+            <!-- Top Buttons (shown when game ends) -->
+            <div class="top-buttons hidden" id="top-buttons">
+                <button id="share-btn-top" class="share-btn">📤 SHARE</button>
+                <button id="play-again-top" class="play-again-btn">PLAY AGAIN</button>
+            </div>
 
             <!-- Guess Input Section -->
             <div class="input-section" id="input-section">
@@ -50,7 +53,10 @@
             <div class="result-section hidden" id="result-section">
                 <pre class="elephant-art" id="elephant-art"></pre>
                 <p class="result-message" id="result-message"></p>
-                <button id="play-again-btn" class="play-again-btn">PLAY AGAIN</button>
+                <div class="result-buttons">
+                    <button id="share-btn" class="share-btn">📤 SHARE</button>
+                    <button id="play-again-btn" class="play-again-btn">PLAY AGAIN</button>
+                </div>
             </div>
         </main>
 

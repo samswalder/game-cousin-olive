@@ -6,6 +6,7 @@ let gameState = {
     guessesRemaining: 5,
     guessHistory: [],
     gameOver: false,
+    won: false,
     usedWords: [],
     totalWrongGuesses: 0  // Persists across games for the session
 };
@@ -25,7 +26,10 @@ const elements = {
     elephantArt: document.getElementById('elephant-art'),
     playAgainBtn: document.getElementById('play-again-btn'),
     playAgainTop: document.getElementById('play-again-top'),
-    inputSection: document.getElementById('input-section')
+    topButtons: document.getElementById('top-buttons'),
+    inputSection: document.getElementById('input-section'),
+    shareBtn: document.getElementById('share-btn'),
+    shareBtnTop: document.getElementById('share-btn-top')
 };
 
 // Calculate Levenshtein distance between two strings
@@ -438,7 +442,7 @@ const SNARKY_MESSAGES = [
     "🎩 The elephant tips his hat... but offers no hint."
 ];
 
-// Generate progressive hints based on wrong guess number (1-5)
+// Generate progressive hints based on wrong guess number (1-4)
 function getProgressiveHint(word, wrongGuessNumber) {
     const w = word.toLowerCase();
 
@@ -461,17 +465,6 @@ function getProgressiveHint(word, wrongGuessNumber) {
             }
             revealed += ' ' + w[w.length - 1].toUpperCase();
             return `Pattern: ${revealed} (${w.length} letters)`;
-        case 5:
-            // Mega hint - every other letter
-            let pattern = '';
-            for (let i = 0; i < w.length; i++) {
-                if (i % 2 === 0) {
-                    pattern += w[i].toUpperCase();
-                } else {
-                    pattern += '_';
-                }
-            }
-            return `Almost there: ${pattern}`;
         default:
             return '';
     }
@@ -744,6 +737,7 @@ function startNewGame() {
     gameState.guessesRemaining = 5;
     gameState.guessHistory = [];
     gameState.gameOver = false;
+    gameState.won = false;
 
     // Add to used words
     gameState.usedWords.push(gameState.currentWord.word);
@@ -761,7 +755,7 @@ function startNewGame() {
     elements.guessInput.disabled = false;
     elements.submitBtn.disabled = false;
     elements.resultSection.classList.add('hidden');
-    elements.playAgainTop.classList.add('hidden');
+    elements.topButtons.classList.add('hidden');
     elements.inputSection.style.display = 'flex';
     elements.elephantArt.classList.remove('elephant-win', 'elephant-lose');
     elements.resultMessage.classList.remove('win', 'lose');
@@ -828,20 +822,21 @@ function submitGuess() {
     const similarity = calculateSimilarity(guess, gameState.currentWord.word);
     const distanceInfo = getDistanceInfo(similarity);
 
-    // Add to history display with progressive hint
-    addGuessToHistory(guess, similarity, distanceInfo, wrongGuessNumber);
-
     // Add a poop emoji to the screen!
     addPoop();
+
+    // Check if out of guesses - end game without showing hint
+    if (gameState.guessesRemaining <= 0) {
+        endGame(false);
+        return;
+    }
+
+    // Add to history display with progressive hint (only if game continues)
+    addGuessToHistory(guess, similarity, distanceInfo, wrongGuessNumber);
 
     // Clear input
     elements.guessInput.value = '';
     elements.guessInput.focus();
-
-    // Check if out of guesses
-    if (gameState.guessesRemaining <= 0) {
-        endGame(false);
-    }
 }
 
 // Shake input animation for invalid guess
@@ -854,13 +849,14 @@ function shakeInput() {
 // End the game
 function endGame(won) {
     gameState.gameOver = true;
+    gameState.won = won;
     elements.guessInput.disabled = true;
     elements.submitBtn.disabled = true;
     elements.inputSection.style.display = 'none';
 
-    // Show result section and top play again button
+    // Show result section and top buttons
     elements.resultSection.classList.remove('hidden');
-    elements.playAgainTop.classList.remove('hidden');
+    elements.topButtons.classList.remove('hidden');
 
     if (won) {
         elements.resultMessage.textContent = 'Congratulations!';
@@ -868,6 +864,64 @@ function endGame(won) {
     } else {
         showLoseAnimation(gameState.currentWord.word);
     }
+}
+
+// ============================================
+// SHARE FUNCTIONALITY
+// ============================================
+
+function generateShareText() {
+    const word = gameState.currentWord.word.toUpperCase();
+    const etymology = gameState.currentWord.etymology;
+
+    let text = `YOU HAVE BEEN ETYMORDLED`;
+
+    // Add word and etymology
+    text += `\n\n📚 ${word}\n${etymology}`;
+
+    text += '\n\nhttps://samswalder.github.io/game-cousin-olive/game.html';
+    return text;
+}
+
+function shareResults() {
+    const shareText = generateShareText();
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'ETYMORDLE',
+            text: shareText
+        }).catch(() => copyToClipboard(shareText));
+    } else {
+        copyToClipboard(shareText);
+    }
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied to clipboard!');
+    }).catch(() => {
+        // Fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast('Copied to clipboard!');
+    });
+}
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
 }
 
 // Event Listeners
@@ -881,6 +935,8 @@ elements.guessInput.addEventListener('keypress', (e) => {
 
 elements.playAgainBtn.addEventListener('click', startNewGame);
 elements.playAgainTop.addEventListener('click', startNewGame);
+elements.shareBtn.addEventListener('click', shareResults);
+elements.shareBtnTop.addEventListener('click', shareResults);
 
 // Add shake animation CSS and poop animation
 const shakeStyle = document.createElement('style');
