@@ -744,6 +744,8 @@ function startCountdown() {
 
 function generateShareText() {
     const dayNumber = getDayNumber();
+    const word = gameState.currentWord.word.toUpperCase();
+    const etymology = gameState.currentWord.etymology;
 
     let text = `ETYMORDLE #${dayNumber} `;
     text += gameState.won ? `${6 - gameState.guessesRemaining}/5` : 'X/5';
@@ -751,18 +753,11 @@ function generateShareText() {
     // Add streak indicator
     const stats = loadDailyStats();
     if (stats.currentStreak >= 3) text += ' 🔥';
-    text += '\n\n';
 
-    // Temperature bars for each guess
-    gameState.similarityHistory.forEach(similarity => {
-        if (similarity >= 90) text += '🟩🟩🟩\n';
-        else if (similarity >= 70) text += '🟨🟩🟨\n';
-        else if (similarity >= 50) text += '🟨🟨🟨\n';
-        else if (similarity >= 30) text += '⬛🟨⬛\n';
-        else text += '⬛⬛⬛\n';
-    });
+    // Add word and etymology
+    text += `\n\n📚 ${word}\n${etymology}`;
 
-    text += '\nhttps://samswalder.github.io/game-cousin-olive/daily.html';
+    text += '\n\nhttps://samswalder.github.io/game-cousin-olive/daily.html';
     return text;
 }
 
