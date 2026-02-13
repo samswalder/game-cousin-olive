@@ -443,28 +443,23 @@ const SNARKY_MESSAGES = [
 ];
 
 // Generate progressive hints based on wrong guess number (1-4)
-function getProgressiveHint(word, wrongGuessNumber) {
-    const w = word.toLowerCase();
+function getProgressiveHint(wordObj, wrongGuessNumber) {
+    const w = wordObj.word.toLowerCase();
 
     switch (wrongGuessNumber) {
         case 1:
             // Snarky non-hint
             return SNARKY_MESSAGES[Math.floor(Math.random() * SNARKY_MESSAGES.length)];
         case 2:
-            // First letter
-            return `It starts with the letter "${w[0].toUpperCase()}"`;
+            // Word length + first letter
+            return `${w.length} letters, starts with "${w[0].toUpperCase()}"`;
         case 3:
+            // Custom hint from word data
+            return wordObj.hint || "Think about what the etymology describes...";
+        case 4:
             // Rhymes with
             const rhyme = findRhyme(w);
             return `Rhymes with "${rhyme}"`;
-        case 4:
-            // Really good hint - reveal pattern
-            let revealed = w[0].toUpperCase();
-            for (let i = 1; i < w.length - 1; i++) {
-                revealed += ' _';
-            }
-            revealed += ' ' + w[w.length - 1].toUpperCase();
-            return `Pattern: ${revealed} (${w.length} letters)`;
         default:
             return '';
     }
@@ -765,7 +760,7 @@ function startNewGame() {
 
 // Add a guess to the history display with progressive hint (prepend so newest is on top)
 function addGuessToHistory(guess, similarity, distanceInfo, wrongGuessNumber) {
-    const hint = getProgressiveHint(gameState.currentWord.word, wrongGuessNumber);
+    const hint = getProgressiveHint(gameState.currentWord, wrongGuessNumber);
 
     const guessItem = document.createElement('div');
     guessItem.className = 'guess-item';
