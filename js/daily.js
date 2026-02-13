@@ -757,7 +757,7 @@ function generateShareText() {
     // Add word and etymology
     text += `\n\n📚 ${word}\n${etymology}`;
 
-    text += '\n\nhttps://samswalder.github.io/game-cousin-olive/daily.html';
+    text += '\n\nhttps://etymordle.samuelwalder.com/daily.html';
     return text;
 }
 
