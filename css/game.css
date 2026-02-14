@@ -190,6 +190,27 @@ body {
     color: var(--neon-pink);
 }
 
+.guesses-remaining.congrats-message {
+    background: linear-gradient(90deg, var(--screaming-yellow), var(--toxic-green));
+    color: #000;
+    font-size: 1.2rem;
+    animation: congratsPulse 0.5s ease-out;
+}
+
+@keyframes congratsPulse {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 /* Guess history */
 .guess-history {
     display: flex;
