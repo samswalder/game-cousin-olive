@@ -3,7 +3,7 @@
 // Game state
 let gameState = {
     currentWord: null,
-    guessesRemaining: 5,
+    guessesRemaining: 4,
     guessHistory: [],
     gameOver: false,
     won: false,
@@ -425,47 +425,18 @@ function findRhyme(word) {
     return 'something';
 }
 
-// Snarky no-hint messages for hint 1
-const SNARKY_MESSAGES = [
-    "You wish I'd give you a hint, wouldn't you? 😏",
-    "A hint? Already? How bold of you.",
-    "Hints are for the weak. Keep guessing!",
-    "The elephant is watching. No hints yet.",
-    "🐘 *stares judgmentally* ...no hint.",
-    "Try harder. The word isn't going anywhere.",
-    "Hint? What hint? I don't see any hints here.",
-    "You've got 4 more guesses. Figure it out.",
-    "Nice try, but you'll have to earn your hints.",
-    "Patience, grasshopper. Hints come to those who fail.",
-    "Error 404: Hint not found.",
-    "🎩 The elephant tips his hat... but offers no hint.",
-    "Oh, you want help? That's adorable.",
-    "The answer is right there in the etymology... somewhere.",
-    "🤔 Let me think... no.",
-    "First guess and already asking for hints? Bold strategy.",
-    "The elephant believes in you. But no hint.",
-    "Have you tried guessing harder?",
-    "Hints cost extra. Keep guessing for now.",
-    "🐘 *trumpets dismissively*",
-    "You'll thank me later for not giving you a hint.",
-    "Where's the fun in just telling you?"
-];
-
-// Generate progressive hints based on wrong guess number (1-4)
+// Generate progressive hints based on wrong guess number (1-3)
 function getProgressiveHint(wordObj, wrongGuessNumber) {
     const w = wordObj.word.toLowerCase();
 
     switch (wrongGuessNumber) {
         case 1:
-            // Snarky non-hint
-            return SNARKY_MESSAGES[Math.floor(Math.random() * SNARKY_MESSAGES.length)];
-        case 2:
             // Word length + first letter
             return `${w.length} letters, starts with "${w[0].toUpperCase()}"`;
-        case 3:
+        case 2:
             // Custom hint from word data
             return wordObj.hint || "Think about what the etymology describes...";
-        case 4:
+        case 3:
             // Rhymes with
             const rhyme = findRhyme(w);
             return `Rhymes with "${rhyme}"`;
@@ -738,7 +709,7 @@ function startNewGame() {
 
     // Pick a random word
     gameState.currentWord = pickRandomWord();
-    gameState.guessesRemaining = 5;
+    gameState.guessesRemaining = 4;
     gameState.guessHistory = [];
     gameState.gameOver = false;
     gameState.won = false;
@@ -765,7 +736,7 @@ function startNewGame() {
     elements.resultMessage.classList.remove('win', 'lose');
     elements.resultMessage.textContent = '';  // Clear any previous message
     // Reset guesses remaining display
-    elements.guessesRemaining.innerHTML = '<span id="guesses-left">5</span> guesses remaining';
+    elements.guessesRemaining.innerHTML = '<span id="guesses-left">4</span> guesses remaining';
     elements.guessesRemaining.classList.remove('congrats-message');
     elements.guessesRemaining.style.display = '';
     // Re-grab the guessesLeft element since we replaced the innerHTML
@@ -825,8 +796,8 @@ function submitGuess() {
     gameState.totalWrongGuesses++;
     elements.guessesLeft.textContent = gameState.guessesRemaining;
 
-    // Calculate which wrong guess this is (1-5)
-    const wrongGuessNumber = 5 - gameState.guessesRemaining;
+    // Calculate which wrong guess this is (1-4)
+    const wrongGuessNumber = 4 - gameState.guessesRemaining;
 
     // Calculate similarity
     const similarity = calculateSimilarity(guess, gameState.currentWord.word);
